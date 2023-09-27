@@ -24,9 +24,9 @@ namespace Projekt7VMTranslator
                 { "sub", "@SP\nAM=M-1\nD=M\nA=A-1\nM=M-D" },
                 { "and", "@SP\nAM=M-1\nD=M\nA=A-1\nM=M&D" },
                 { "or",  "@SP\nAM=M-1\nD=M\nA=A-1\nM=M|D" },
-                { "gt", "@SP\nAM=M-1\nD=M\nA=A-1\nD=M-D\n@FALSE\n" + "D;JLE\n@SP\nA=M-1\nM=-1\n@CONTINUE" + "\n0;JMP\n(FALSE" + ")\n@SP\nA=M-1\nM=0\n(CONTINUE"+")\n" },
-                { "lt", "@SP\nAM=M-1\nD=M\nA=A-1\nD=M-D\n@FALSE\n" + "D;LGE\n@SP\nA=M-1\nM=-1\n@CONTINUE" + "\n0;JMP\n(FALSE" + ")\n@SP\nA=M-1\nM=0\n(CONTINUE"+")\n" },
-                { "eq", "@SP\nAM=M-1\nD=M\nA=A-1\nD=M-D\n@FALSE\n" + "D;JNE\n@SP\nA=M-1\nM=-1\n@CONTINUE" + "\n0;JMP\n(FALSE" + ")\n@SP\nA=M-1\nM=0\n(CONTINUE"+")\n" },
+                { "gt", "@SP\nAM=M-1\nD=M\nA=A-1\nD=M-D\n@FALSE\n" + "D;JLE\n@SP\nA=M-1\nM=-1\n@CONTINUE" + "\n0;JMP\n(FALSE" + ")\n@SP\nA=M-1\nM=0\n(CONTINUE"+")" },
+                { "lt", "@SP\nAM=M-1\nD=M\nA=A-1\nD=M-D\n@FALSE\n" + "D;LGE\n@SP\nA=M-1\nM=-1\n@CONTINUE" + "\n0;JMP\n(FALSE" + ")\n@SP\nA=M-1\nM=0\n(CONTINUE"+")" },
+                { "eq", "@SP\nAM=M-1\nD=M\nA=A-1\nD=M-D\n@FALSE\n" + "D;JNE\n@SP\nA=M-1\nM=-1\n@CONTINUE" + "\n0;JMP\n(FALSE" + ")\n@SP\nA=M-1\nM=0\n(CONTINUE"+")" },
                 { "not", "@SP\nA=M-1\nM=!M\n" },
                 { "neg", "D=0\n@SP\nA=M-1\nM=D-M\n" },
             };
@@ -41,7 +41,7 @@ namespace Projekt7VMTranslator
             };
             PushTable = new Dictionary<string, string>()
             {
-                { "constant", ""+"\nD=A\n@SP\nA=M\nM=D\n@SP\nM=M+1\n" },
+                { "constant", ""+"\nD=A\n@SP\nA=M\nM=D\n@SP\nM=M+1" },
                 { "local", "LCL" },
                 { "argument", "ARG" },
                 { "this", "THIS" },
@@ -52,9 +52,9 @@ namespace Projekt7VMTranslator
         public string HandleArithmeticCommand(List<string> segment)
         {
             string output;
-            string seg1 = ArithmeticTable[segment[0]];
+            string segmentValue = ArithmeticTable[segment[0]];
 
-
+            return segmentValue;
         }
         public string HandlePopCommand(List<string> segment)
         {
@@ -127,19 +127,19 @@ namespace Projekt7VMTranslator
             if (hasPointer)
                 pointerCode = "@" + number + "\nA=D+A\nD=M\n";
             
-            return "@" + pushTableVal + "\nD=M\n" + pointerCode + "@SP\nA=M\nM=D\n@SP\nM=M+1\n";
+            return "@" + pushTableVal + "\nD=M\n" + pointerCode + "@SP\nA=M\nM=D\n@SP\nM=M+1";
         }
 
         private string ProcessPopValue(string popTableVal, int number, bool hasPointer)
         {
             string pointerCode = hasPointer ? "D=A\n" : "D=M\n@" + number + "\nD=D+A\n";
 
-            return "@" + popTableVal + "\n" + pointerCode + "@R13\nM=D\n@SP\nAM=M-1\nD=M\n@R13\nA=M\nM=D\n";
+            return "@" + popTableVal + "\n" + pointerCode + "@R13\nM=D\n@SP\nAM=M-1\nD=M\n@R13\nA=M\nM=D";
         }
 
         public List<string> SplitLines(string fileText)
         {
-            return fileText.Split("\r\n").ToList();
+            return fileText.Split("\n").ToList();
         }
 
         public List<string> SegmentLine(string line)
