@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Projekt7VMTranslator
 {
-    public class VMFileReader
+    public static class VMFileReader
     {
-        public string ReadVMFile(string filePath)
+        public static string ReadVMFile(string filePath)
         {
             if (!File.Exists(filePath))
             {
@@ -17,7 +17,7 @@ namespace Projekt7VMTranslator
             return File.ReadAllText(filePath);
         }
 
-        public string RemoveCodeCommentsAndSpaces(string currentLine)
+        public static string RemoveCodeCommentsAndSpaces(string currentLine)
         {
             var lines = currentLine.Split('\n')
                             .Where(line => !line.TrimStart().StartsWith("//"))  // Remove lines starting with comments
