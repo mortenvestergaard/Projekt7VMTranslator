@@ -60,6 +60,9 @@ namespace Projekt7VMTranslator
         /// /// <exception cref="ArgumentException"></exception>
         public string HandleArithmeticCommand(List<string> segment)
         {
+            if (!ArithmeticTable.ContainsKey(segment[0]))
+                throw new ArgumentException("Arithmetic command not recognized");
+
             string segmentValue = ArithmeticTable[segment[0]];
             if (segment[0] == "gt" || segment[0] == "lt" || segment[0] == "eq")
             {
